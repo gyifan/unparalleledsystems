@@ -9,11 +9,11 @@
 
 #define FILE_INPUT 	"../data/input.dat"
 #define FILE_OUTPUT 	"../output/out.dat"
-#define STRING_SIZE 	5
+#define GOLD_OUTPUT	"../data/out.gold.dat"
 #define SAMPLES		600
 
 int main(int argc,char* argv[]){
-	
+
 	FILE *fdout;
 	FILE *fdin;
 	char buf_1[STRING_SIZE];
@@ -31,12 +31,12 @@ int main(int argc,char* argv[]){
 		fprintf(stderr, "Open output file failed\n");
 		return -1;
 	}
-	
+
 
 	// Read from input file by char. It reads first STRING_SIZE char into
 	// buf_1, and then reads the next STRING_SIZE char into buf_2. Then, 
 	// align buf_1 and buf_2, print the output in the output file.
-	
+
 	for(i=0; i<SAMPLES; i++){
 		for(j=0; j<STRING_SIZE; j++)
 			buf_1[j]=fgetc(fdin);
@@ -45,7 +45,7 @@ int main(int argc,char* argv[]){
 			buf_2[j]=fgetc(fdin);
 		fgetc(fdin); //discard the space
 		if(-1==swalign_hls((char *)&buf_1, (char *)&buf_2, (char *)&result)){
-			fprintf(stderr, "swalign error\n");
+			fprintf(stderr, "swalign_hls error\n");
 			return -1;
 		}
 
@@ -55,6 +55,21 @@ int main(int argc,char* argv[]){
 	// close the files
 	fclose(fdin);
 	fclose(fdout);
+
+	// test the output
+	printf ("Comparing against output data \n");
+	if (system("diff -w ../output/out.dat ../data/out.gold.dat")) {
+
+		fprintf(stdout, "*******************************************\n");
+		fprintf(stdout, "FAIL: Output DOES NOT match the golden output\n");
+		fprintf(stdout, "*******************************************\n");
+		return 1;
+	} else {
+		fprintf(stdout, "*******************************************\n");
+		fprintf(stdout, "PASS: The output matches the golden output!\n");
+		fprintf(stdout, "*******************************************\n");
+		return 0;
+	}
 
 	return 0;
 }

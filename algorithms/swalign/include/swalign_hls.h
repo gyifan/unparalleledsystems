@@ -30,6 +30,9 @@
 #define DELETE_SCORE -1
 #define INSERT_SCORE -1
 
+// string properties
+#define STRING_SIZE	5
+
 //==============================================================================
 // Types
 

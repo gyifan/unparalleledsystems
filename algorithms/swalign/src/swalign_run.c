@@ -3,8 +3,8 @@
 #include <string.h>
 #include "swalign.h"
 
-#define FILE_INPUT 	"input.dat"
-#define FILE_OUTPUT 	"../data/output.dat"
+#define FILE_INPUT 	"../data/input.dat"
+#define FILE_OUTPUT 	"../output/out.gold.dat"
 #define BUF_SIZE 	80
 #define SAMPLES		600
 
@@ -30,7 +30,7 @@ int main(int argc,char* argv[]){
 	char buf_0[BUF_SIZE*SAMPLES];
 	char* buf[2*SAMPLES];
 	char* result[SAMPLES];
-	int i=0; // counter
+	int i; // counter
 
 	if(NULL==(fdin=fopen(FILE_INPUT,"r"))){
 		fprintf(stderr, "Open input file failed\n");

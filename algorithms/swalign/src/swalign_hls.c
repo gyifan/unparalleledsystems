@@ -33,18 +33,14 @@ int strlength(char* string) {
 
 int swalign_hls(char* stringA, char* stringB, char* result) {
 	
-	// calculate lengths and initialize score matrix
-	int lengthA = strlen(stringA) + 1;
-	int lengthB = strlen(stringB) + 1;
-	//int size = 16*20*20;
-	SCORE_CELL score[lengthA][lengthB];
+	SCORE_CELL score[TABLE_WIDTH][TABLE_WIDTH];
 
 	// fill initial row/column of score matrix
-	for (int i=0; i<lengthA; i++) {
+	for (int i=0; i<TABLE_WIDTH; i++) {
 		score[i][0].value = 0;
 		score[i][0].parent = EMPTY;
 	}
-	for (int j=0; j<lengthB; j++) {
+	for (int j=0; j<TABLE_WIDTH; j++) {
 		score[0][j].value = 0;
 		score[0][j].parent = EMPTY;
 	}
@@ -59,8 +55,15 @@ int swalign_hls(char* stringA, char* stringB, char* result) {
 	int maxI = 0;
 	int maxJ = 0;
 	
-	for (int i=1; i<lengthA; i++) {
-		for (int j=1; j<lengthB; j++) {
+	// variables used in backtrack
+	int ia;
+	int jb;
+	int parent = MATCH;
+	int count = 0;
+	char aligned[TABLE_WIDTH+TABLE_WIDTH];
+	
+	for (int i=1; i<TABLE_WIDTH; i++) {
+		for (int j=1; j<TABLE_WIDTH; j++) {
 			// calculate potential scores
 			empty = 0;
 			match = (stringA[i-1] == stringB[j-1]) ? 
@@ -95,12 +98,9 @@ int swalign_hls(char* stringA, char* stringB, char* result) {
 	}
 	
 	// backtrack
-	int ia = maxI;
-	int jb = maxJ;
-	int parent = MATCH;
-	int count = 0;
-	char aligned[lengthA+lengthB];
-	
+	ia = maxI;
+	jb = maxJ;
+
 	while (parent != EMPTY) {
 		parent = score[ia][jb].parent;
 		switch (parent) {

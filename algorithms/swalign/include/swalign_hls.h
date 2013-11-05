@@ -32,6 +32,7 @@
 
 // string properties
 #define STRING_SIZE	5
+#define TABLE_WIDTH	6
 
 //==============================================================================
 // Types
